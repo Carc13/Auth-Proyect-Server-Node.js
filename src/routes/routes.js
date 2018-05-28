@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const login = require('../functions/login');
 const profile = require('../functions/profile');
 const config = require('../config/config.json');
-
+const register = require('../functions/register');
 module.exports = router => {
 
 
@@ -60,7 +60,7 @@ router.get('/', (req, res) => res.end('Welcome to FSS !'));
 		const password = req.body.password;
 
 		if (!name || !email || !password || !name.trim() || !email.trim() || !password.trim()) {
-
+			console.log(name + email + password);
 			res.status(400).json({message: 'Invalid Request !'});
 
 		} else {
