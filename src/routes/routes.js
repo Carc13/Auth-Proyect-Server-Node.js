@@ -2,11 +2,14 @@
 
 const auth = require('basic-auth');
 const jwt = require('jsonwebtoken');
+const login = require('../functions/login');
+const profile = require('../functions/profile');
+const config = require('../config/config.json');
 
 module.exports = router => {
 
 
-router.get('/', (req, res) => res.end('Welcome to Learn2Crack !'));
+router.get('/', (req, res) => res.end('Welcome to FSS !'));
 
 	router.post('/authenticate', (req, res) => {
 		
@@ -46,6 +49,31 @@ router.get('/', (req, res) => res.end('Welcome to Learn2Crack !'));
 		} else {
 
 			res.status(401).json({ message: 'Invalid Token !' });
+		}
+	});
+
+
+	router.post('/users', (req, res) => {  
+
+		const name = req.body.name;
+		const email = req.body.email;
+		const password = req.body.password;
+
+		if (!name || !email || !password || !name.trim() || !email.trim() || !password.trim()) {
+
+			res.status(400).json({message: 'Invalid Request !'});
+
+		} else {
+
+			register.registerUser(name, email, password)
+
+			.then(result => {
+
+				res.setHeader('Location', '/users/'+email);
+				res.status(result.status).json({ message: result.message })
+			})
+
+			.catch(err => res.status(err.status).json({ message: err.message }));
 		}
 	});
 	
